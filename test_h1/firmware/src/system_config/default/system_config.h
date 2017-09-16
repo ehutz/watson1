@@ -57,7 +57,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 /*  This section Includes other configuration headers necessary to completely
     define this configuration.
 */
-//#include "bsp.h"
 
 
 // DOM-IGNORE-BEGIN
@@ -142,11 +141,20 @@ extern "C" {
 #define DRV_TMR_INTERRUPT_PRIORITY_IDX0     INT_PRIORITY_LEVEL1
 #define DRV_TMR_INTERRUPT_SUB_PRIORITY_IDX0 INT_SUBPRIORITY_LEVEL0
 #define DRV_TMR_CLOCK_SOURCE_IDX0           DRV_TMR_CLKSOURCE_INTERNAL
-#define DRV_TMR_PRESCALE_IDX0               TMR_PRESCALE_VALUE_256
+#define DRV_TMR_PRESCALE_IDX0               TMR_PRESCALE_VALUE_4
 #define DRV_TMR_OPERATION_MODE_IDX0         DRV_TMR_OPERATION_MODE_16_BIT
 #define DRV_TMR_ASYNC_WRITE_ENABLE_IDX0     false
 #define DRV_TMR_POWER_STATE_IDX0            SYS_MODULE_POWER_RUN_FULL
 
+ // *****************************************************************************
+/* USART Driver Configuration Options
+*/
+#define DRV_USART_INSTANCES_NUMBER                  1
+#define DRV_USART_CLIENTS_NUMBER                    1
+#define DRV_USART_INTERRUPT_MODE                    false
+#define DRV_USART_BYTE_MODEL_SUPPORT                true
+#define DRV_USART_READ_WRITE_MODEL_SUPPORT          false
+#define DRV_USART_BUFFER_QUEUE_SUPPORT              false
  
 // *****************************************************************************
 // *****************************************************************************
@@ -156,9 +164,6 @@ extern "C" {
 /*** OSAL Configuration ***/
 #define OSAL_USE_RTOS          9
 
-// *****************************************************************************
-/* BSP Configuration Options
-*/
 
 
 // *****************************************************************************
@@ -170,7 +175,7 @@ extern "C" {
     //Added by Madelyn
 #define APP_HEARTBEAT_TMR DRV_TMR_INDEX_0
 #define APP_HEARTBEAT_TMR_IS_PERIODIC true
-#define APP_HEARTBEAT_TMR_PERIOD 0x1000//0xFE51
+#define APP_HEARTBEAT_TMR_PERIOD 0xFFFF//0xFE51
 #define APP_HEARTBEAT_COUNT_MAX 6
 #define APP_HEARTBEAT_PORT PORT_CHANNEL_A
 #define APP_HEARTBEAT_PIN PORTS_BIT_POS_3

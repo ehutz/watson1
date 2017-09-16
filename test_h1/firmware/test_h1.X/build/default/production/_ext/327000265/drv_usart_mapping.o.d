@@ -1,5 +1,5 @@
-build/default/production/_ext/1688732426/system_tasks.o:  \
- ../src/system_config/default/system_tasks.c  \
+build/default/production/_ext/327000265/drv_usart_mapping.o:  \
+ ../src/system_config/default/framework/driver/usart/src/drv_usart_mapping.c  \
  ../src/system_config/default/system_config.h  \
  ../src/system_config/default/system_definitions.h  \
  ../../../../framework/system/common/sys_common.h  \
@@ -7,7 +7,6 @@ build/default/production/_ext/1688732426/system_tasks.o:  \
  ../src/system_config/default/framework/system/devcon/sys_devcon.h  \
  ../../../../framework/system/system.h  \
  ../../../../framework/system/clk/sys_clk.h  \
- ../src/system_config/default/system_config.h  \
  ../../../../framework/peripheral/osc/plib_osc.h  \
  ../../../../framework/peripheral/osc/processor/osc_processor.h  \
  ../../../../framework/peripheral/osc/processor/osc_p32xxxx.h  \
@@ -287,5 +286,4 @@ build/default/production/_ext/1688732426/system_tasks.o:  \
  ../../../../framework/peripheral/ports/processor/../templates/ports_ChangeNoticeEdgeControl_Unsupported.h  \
  ../../../../framework/peripheral/ports/processor/../templates/ports_ChangeNoticeEdgeStatus_Unsupported.h  \
  ../../../../framework/peripheral/ports/plib_ports_compatibility.h  \
- ../src/app.h  \
-../src/system_config/default/system_definitions.h 
+ ../src/app.h 

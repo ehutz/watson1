@@ -67,10 +67,10 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 /*** DEVCFG1 ***/
 
-#pragma config FNOSC =      PRIPLL
+#pragma config FNOSC =      FRCPLL
 #pragma config FSOSCEN =    ON
 #pragma config IESO =       ON
-#pragma config POSCMOD =    XT
+#pragma config POSCMOD =    OFF
 #pragma config OSCIOFNC =   OFF
 #pragma config FPBDIV =     DIV_1
 #pragma config FCKSM =      CSECMD
@@ -82,12 +82,12 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #pragma config FPLLMUL =    MUL_20
 #pragma config FPLLODIV =   DIV_1
 #pragma config UPLLIDIV =   DIV_2
-#pragma config UPLLEN =     ON
+#pragma config UPLLEN =     OFF
 /*** DEVCFG3 ***/
 
 #pragma config USERID =     0xffff
 #pragma config FSRSSEL =    PRIORITY_7
-#pragma config FMIIEN =     OFF
+#pragma config FMIIEN =     ON
 #pragma config FETHIO =     ON
 #pragma config FCANIO =     ON
 #pragma config FUSBIDIO =   ON
@@ -112,6 +112,8 @@ const DRV_TMR_INIT drvTmr0InitData =
     .interruptSource = DRV_TMR_INTERRUPT_SOURCE_IDX0,
     .asyncWriteEnable = false,
 };
+// </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="DRV_USART Initialization Data">
 // </editor-fold>
 
 // *****************************************************************************
@@ -161,10 +163,11 @@ void SYS_Initialize ( void* data )
     SYS_DEVCON_JTAGDisable();
     SYS_PORTS_Initialize();
 
-    /* Board Support Package Initialization */
-//    BSP_Initialize();        
-
     /* Initialize Drivers */
+
+    /* Initialize ADC */
+    DRV_ADC_Initialize();
+
 
     sysObj.drvTmr0 = DRV_TMR_Initialize(DRV_TMR_INDEX_0, (SYS_MODULE_INIT *)&drvTmr0InitData);
 
@@ -172,6 +175,9 @@ void SYS_Initialize ( void* data )
     SYS_INT_VectorSubprioritySet(INT_VECTOR_T2, INT_SUBPRIORITY_LEVEL0);
  
  
+     sysObj.drvUsart0 = DRV_USART_Initialize(DRV_USART_INDEX_0, (SYS_MODULE_INIT *)NULL);
+    SYS_INT_VectorPrioritySet(INT_VECTOR_UART1, INT_PRIORITY_LEVEL2);
+    SYS_INT_VectorSubprioritySet(INT_VECTOR_UART1, INT_SUBPRIORITY_LEVEL0);
  
     /* Initialize System Services */
 

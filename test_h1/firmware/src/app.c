@@ -114,12 +114,15 @@ APP_DATA appData;
 
 void APP_Initialize ( void )
 {
-   
+    DRV_ADC_Open();
+    DRV_ADC_Start();
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
     appData.heartbeatTimer = DRV_HANDLE_INVALID;
     appData.heartbeatCount = 0;
     appData.heartbeatToggle = false;
+    appData.ADCToggle = false;
+    appData.ADCcount = 0;
 
     
     /* TODO: Initialize your application's state machine and other
@@ -148,6 +151,7 @@ static void APP_TimerCallback ( uintptr_t context, uint32_t alarmCount )
 void APP_Tasks ( void )
 {
  /* Signal the application's heartbeat. */
+
     if (appData.heartbeatToggle == true)
     {
         SYS_PORTS_PinToggle(PORTS_ID_0, APP_HEARTBEAT_PORT,
@@ -177,6 +181,15 @@ void APP_Tasks ( void )
 
         case APP_STATE_IDLE:
         {
+            appData.ADCcount += 1;
+            char potValue = 'x';
+            //potValue = -1;
+            potValue = PLIB_ADC_ResultGetByIndex(ADC_ID_1,appData.ADCcount);
+            DRV_USART0_WriteByte(potValue);
+            DRV_USART0_WriteByte(potValue);
+            //DRV_USART0_WriteByte('b');
+            appData.ADCToggle = !appData.ADCToggle;
+            OC1RS = (int) appData.ADCToggle;
             break;
         }
     

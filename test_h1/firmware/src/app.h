@@ -122,6 +122,8 @@ typedef struct
     
     /*Heartbeat LED toggle flag. */
     bool heartbeatToggle;
+    bool ADCToggle;
+    int ADCcount;
     /* TODO: Define any additional data used by the application. */
 
 } APP_DATA;
