@@ -176,6 +176,7 @@ void APP_Tasks ( void )
                 DRV_TMR_Start(appData.heartbeatTimer);
                 appData.state = APP_STATE_IDLE;
             }
+            uint16_t seePeriod  = DRV_TMR_AlarmPeriodGet ( appData.heartbeatTimer );
             break;
          }
 

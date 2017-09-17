@@ -231,6 +231,7 @@
     <Elem>..\src</Elem>
     <Elem>..\src\default</Elem>
     <Elem>..\src\system_config\default</Elem>
+    <Elem>C:\Program Files\Phidgets\Phidget22</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

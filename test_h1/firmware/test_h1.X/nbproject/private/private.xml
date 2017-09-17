@@ -5,8 +5,8 @@
         <group>
             <file>file:/C:/microchip/harmony/v2_04/apps/test_h1/firmware/src/app.h</file>
             <file>file:/C:/microchip/harmony/v2_04/apps/test_h1/firmware/src/app.c</file>
+            <file>file:/C:/microchip/harmony/v2_04/apps/test_h1/firmware/src/main.c</file>
             <file>file:/C:/microchip/harmony/v2_04/apps/test_h1/firmware/src/system_config/default/system_config.h</file>
-            <file>file:/C:/microchip/harmony/v2_04/apps/test_h1/firmware/src/system_config/default/system_tasks.c</file>
         </group>
     </open-files>
 </project-private>
