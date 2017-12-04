@@ -4,7 +4,7 @@ import json
 import threading
 import time
 import datetime
-
+import struct
 TCP_IP = '' # listen to all IPs on the network.
 TCP_PORT = 2000 # listen on port 2000.
 BUFFER_SIZE = 1024 # maximum number of bytes of data that can be sent and received through the socket's buffer.
@@ -157,9 +157,89 @@ class ThreadedServer(object):
                 client.send(message[i]);
                 i = i + 1
             print ("End Json data sent to client!")
+    def getCoordinateChar(self, data):
+        position = self.find_str(data, 'coordinate":') + 12
+        row = data[position]
+        column = data[position + 1]
+        print ("row:" + row)
+        print ("column:" + column)
+        e = '0'
+        if row == 'A':
+            if column == '1':
+                e = '0'
+            elif column == '2':
+                e = '1'
+            elif column == '3':
+                e = '2'
+            elif column == '4':
+                e = '3'
+            elif column == '5':
+                e = '4'
+        elif row == 'B':
+            if column == '1':
+                e = '@'
+            elif column == '2':
+                e = 'A'
+            elif column == '3':
+                e = 'B'
+            elif column == '4':
+                e = 'C'
+            elif column == '5':
+                e = 'D'
+        elif row == 'C':
+            if column == '1':
+                e = 'P'
+            elif column == '2':
+                e = 'Q'
+            elif column == '3':
+                e = 'R'
+            elif column == '4':
+                e = 'S'
+            elif column == '5':
+                e = 'T'
+        elif row == 'D':
+            if column == '1':
+                e = "'"
+            elif column == '2':
+                e = 'a'
+            elif column == '3':
+                e = 'b'
+            elif column == '4':
+                e = 'c'
+            elif column == '5':
+                e = 'd'
+        elif row == 'E':
+            if column == '1':
+                e = 'p'
+            elif column == '2':
+                e = 'q'
+            elif column == '3':
+                e = 'r'
+            elif column == '4':
+                e = 's'
+            elif column == '5':
+                e = 't'
+        print (e)
+        return e
+        
+    def find_str(self, s, char):
+        index = 0
 
+        if char in s:
+            c = char[0]
+            for ch in s:
+                if ch == c:
+                    if s[index:index+len(char)] == char:
+                        return index
+
+                index += 1
+
+        return -1                             
+                             
     def listen(self):
+        charOut = self.getCoordinateChar('"coordinate":A3');
         print ("Started listening for connections...")
+        print (charOut)
         self.sock.listen(BACKLOG)
         count = 1
         client_address = [0,0,0,0,0]
@@ -194,17 +274,23 @@ class ThreadedServer(object):
             time.sleep(1)
             data = client_pic.recv(BUFFER_SIZE)
             print (str(player) + " PIC : " + data)
-
             self.sendMessage(client_pic, '{"client":' + str(player) + '}')
             data = client_pic.recv(BUFFER_SIZE)
             print (str(player) + " PIC : " + data)
             self.sendMessage(client_pic, '{"activate":' + str(player) + '}')
             data = client_pic.recv(BUFFER_SIZE)
             print (str(player) + " PIC : " + data)
+
+            print("Initialize GUI..." + str(player))
+            self.sendMessage(client, '{"ping":0}')
+            data = client.recv(BUFFER_SIZE)
+            print(data)
+
             time.sleep(2)
             global NEED_TO_RECONNECT
             NEED_TO_RECONNECT = False
-
+            global GAMEOVER
+            GAMEOVER = 0
         # starting time
         t = time.time()
         st = datetime.datetime.fromtimestamp(t).strftime('%Y-%m-%d %H:%M:%S')
@@ -238,20 +324,28 @@ class ThreadedServer(object):
                             print(str(player) + "has a coordinate?")
                         print("received" + str(player))
                         count = 0
+                        goingTo = self.getCoordinateChar(data) 
+
                         self.sendMessage(client_pic, '{"activate":' + str(player) + '}')
                         data = client_pic.recv(BUFFER_SIZE)
                         print("PIC " + str(player) + ' ' + data)
 
-                         
-                        self.sendMessage(client_pic, '{"goto":B}')
+                        self.sendMessage(client_pic, '{"goto":' + goingTo + '}')
                         #time.sleep(30)
                         data = client_pic.recv(BUFFER_SIZE)
                         print("PIC " + str(player) + ' ' + data)
-                        if 'WinScore' in data:
+                        if GAMEOVER > 0:
+                            while count < 2:
+                                self.sendMessage(client, '{"win":' + str(GAMEOVER) + '}')
+                                data = client.recv(BUFFER_SIZE)
+                                count = count + 1
+                                print (data) # recieves hello from the  
+                        elif 'Win' in data:
                             while count < 2:
                                 self.sendMessage(client, '{"win":' + str(player) + '}')
                                 data = client.recv(BUFFER_SIZE)
                                 count = count + 1
+                                GAMEOVER = player
                                 print (data) # recieves hello from the wifly.
                             
                         elif 'hit' in data:
